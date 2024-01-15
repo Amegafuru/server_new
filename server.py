@@ -17,12 +17,6 @@ app.register_blueprint(routes_Bp, url_prefix='/api')
 # Создание объекта MongoClient
 client = MongoClient(os.getenv('DB_URL'))
 
-# Получение списка доступных баз данных
-database_names = client.list_database_names()
-
-# Вывод списка баз данных
-print("Список баз данных:", database_names)
-
 # Функция для проверки доступности сервера MongoDB
 def check_mongo_server():
     try:
@@ -36,6 +30,11 @@ def check_mongo_server():
 # Функция для проверки подключения к базе данных
 def check_db_connection():
     try:
+        # Получение списка доступных баз данных
+        database_names = client.list_database_names()
+        # Вывод списка баз данных
+        print("Список баз данных:", database_names)
+
         db = client['mydatabase']  # Замените 'your_database_name' на имя вашей базы данных
         collection = db['users']  # Замените 'your_collection_name' на имя вашей коллекции
         document = collection.find_one()
@@ -44,7 +43,7 @@ def check_db_connection():
             print("Подключение к коллекции успешно. Имя коллекции:", collection.name)
             return True
         else:
-            print("Ошибка: Неверное имя коллекции")
+            print("Ошибка: Неверное имя коллекции или базы данных")
             return False
     except Exception as e:
         print("Ошибка при подключении к базе данных:", e)
